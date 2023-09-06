@@ -9,13 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.entity.Category;
+import com.entity.Product;
 import com.repository.CategoryRepository;
+import com.repository.ProductRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	CategoryRepository cr;
+
+	@Autowired
+	private ProductRepository pr;
 
 	@Override
 	public ResponseEntity<List<Category>> get() {
@@ -39,10 +44,21 @@ public class CategoryServiceImpl implements CategoryService {
 	public ResponseEntity<Category> post(Category category) {
 		try {
 			cr.save(category);
+			if (category.getProducts() != null && !category.getProducts().isEmpty()) {
+				for (Product product : category.getProducts()) {
+					Product existingProduct = pr.findById(product.getProductId()).orElse(null);
+					if (existingProduct != null) {
+						System.out.println(existingProduct);
+						existingProduct.getCategories().add(category);
+						pr.save(existingProduct);
+					}
+				}
+			}
+
+			return new ResponseEntity<>(category, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(category, HttpStatus.OK);
 	}
 
 	@Override

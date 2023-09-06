@@ -40,12 +40,12 @@ public class UserController {
 	}
 
 	@GetMapping("/getUsers")
-	public List<User> getAppuntamenti() {
+	public List<User> getUsers() {
 		return us.findAll();
 	}
 
 	@DeleteMapping("/deleteUser/{id}")
-	public void Delete(@PathVariable Integer id) {
+	public void Delete(@PathVariable String id) {
 		us.delete(id);
 	}
 

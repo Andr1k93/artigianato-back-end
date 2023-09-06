@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(String id) {
 		try {
 			userRepo.deleteById(id);
 		} catch (IllegalArgumentException e) {

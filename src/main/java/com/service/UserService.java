@@ -11,13 +11,13 @@ import com.entity.User;
 
 public interface UserService {
 
-	ResponseEntity<String> addUser(UserDTO employeeDTO);
+	ResponseEntity<String> addUser(UserDTO userDTO);
 
 	LoginMessage loginUser(LoginDTO loginDTO);
 
 	List<User> findAll();
 
-	public void delete(Integer id);
+	public void delete(String id);
 
 	User findByEmail(String email);
 

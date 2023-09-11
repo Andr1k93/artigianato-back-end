@@ -11,7 +11,7 @@ import com.entity.User;
 
 public interface UserService {
 
-	ResponseEntity<String> addUser(UserDTO userDTO);
+	ResponseEntity<Object> addUser(UserDTO userDTO);
 
 	LoginMessage loginUser(LoginDTO loginDTO);
 

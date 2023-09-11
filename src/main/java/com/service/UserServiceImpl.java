@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public ResponseEntity<String> addUser(UserDTO userDTO) {
+	public ResponseEntity<Object> addUser(UserDTO userDTO) {
 		User user = new User(userDTO.getUserid(), userDTO.getUsername(), userDTO.getEmail(),
 				this.passwordEncoder.encode(userDTO.getPassword()));
 		if (userDTO.getEmail().contains("admin@")) {
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 			return ResponseEntity.badRequest().body("Email is already registered.");
 		}
 		userRepo.save(user);
-		return ResponseEntity.ok(user.getUsername());
+		return ResponseEntity.ok(user);
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
 			String encodedPassword = user1.getPassword();
 			Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
 			if (isPwdRight) {
-				Optional<User> employee = userRepo.findOneByEmailAndPassword(loginDTO.getEmail(), encodedPassword);
-				if (employee.isPresent()) {
+				Optional<User> user = userRepo.findOneByEmailAndPassword(loginDTO.getEmail(), encodedPassword);
+				if (user.isPresent()) {
 					return new LoginMessage("Login Success", true);
 				} else {
 					return new LoginMessage("Login Failed", false);

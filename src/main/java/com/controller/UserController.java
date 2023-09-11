@@ -28,8 +28,8 @@ public class UserController {
 	private UserService us;
 
 	@PostMapping("/save")
-	public ResponseEntity<String> saveUser(@RequestBody UserDTO UserDTO) {
-		ResponseEntity<String> id = us.addUser(UserDTO);
+	public ResponseEntity<Object> saveUser(@RequestBody UserDTO UserDTO) {
+		ResponseEntity<Object> id = us.addUser(UserDTO);
 		return id;
 	}
 
@@ -40,7 +40,7 @@ public class UserController {
 	}
 
 	@GetMapping("/getUsers")
-	public List<User> getUsers() {
+	public List<User> getAppuntamenti() {
 		return us.findAll();
 	}
 

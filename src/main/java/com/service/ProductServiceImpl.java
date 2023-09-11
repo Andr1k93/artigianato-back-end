@@ -16,6 +16,7 @@ import com.entity.Product;
 import com.repository.CategoryRepository;
 import com.repository.ImageRepository;
 import com.repository.ProductRepository;
+import com.repository.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -30,6 +31,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ImageRepository ir;
+
+	@Autowired
+	private UserRepo ur;
 
 	@Override
 	public ResponseEntity<List<Product>> get() {
@@ -47,6 +51,15 @@ public class ProductServiceImpl implements ProductService {
 
 		}
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public List<Product> getProductsByUserId(String userId) {
+		List<Product> products = pr.findByUserUserId(userId);
+		if (products.isEmpty()) {
+			return products;
+		}
+		return products;
 	}
 
 	@Override
@@ -69,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
 		product.setName(productDTO.getName());
 		product.setPrice(productDTO.getPrice());
 		product.setDescription(productDTO.getDescription());
+		product.setUser(ur.findById(productDTO.getUserId()).get());
 
 		List<Category> categories = new ArrayList<>();
 		for (String categoryId : productDTO.getCategoryId()) {

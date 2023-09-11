@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Product {
 
 	private String description;
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories = new ArrayList<>();
@@ -57,6 +60,7 @@ public class Product {
 	@JoinColumn(name = "ordine_id")
 	private Ordine order;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

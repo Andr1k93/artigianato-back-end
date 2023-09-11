@@ -15,6 +15,8 @@ public interface ProductService {
 
 	public ResponseEntity<Product> patch(Product product);
 
-	ResponseEntity<Product> post(ProductDTO productDTO);
+	public ResponseEntity<Product> post(ProductDTO productDTO);
+
+	public List<Product> getProductsByUserId(String userId);
 
 }

@@ -30,14 +30,12 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ResponseEntity<Review> createReview(ReviewDTO reviewDTO) {
-		// Find the User by ID
+
 		User user = ur.findById(reviewDTO.getUserId())
 				.orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + reviewDTO.getUserId()));
 
-		// Find the Product by ID
 		Product product = pr.findById(reviewDTO.getProductId()).orElseThrow(
 				() -> new EntityNotFoundException("Product not found with ID: " + reviewDTO.getProductId()));
-		// Create a new Review entity
 		Review review = new Review();
 		review.setUser(user);
 		review.setProduct(product);
@@ -54,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public List<Review> getReviewsByUser(String userId) {
-		return rr.findByUserUserid(userId);
+		return rr.findByUserUserId(userId);
 	}
 
 	public void addReviewToProduct(Review review) {

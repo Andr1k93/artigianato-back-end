@@ -19,7 +19,7 @@ public class User {
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private String userid;
+	private String userId;
 	@Column(name = "user_name", length = 255)
 	private String username;
 	private String role;
@@ -40,7 +40,7 @@ public class User {
 	}
 
 	public User(String userId, String username, String email, String password) {
-		this.userid = userId;
+		this.userId = userId;
 		this.username = username;
 		this.email = email;
 		this.password = password;

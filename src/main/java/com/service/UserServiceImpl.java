@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<Object> addUser(UserDTO userDTO) {
-		User user = new User(userDTO.getUserid(), userDTO.getUsername(), userDTO.getEmail(),
+		User user = new User(userDTO.getUserId(), userDTO.getUsername(), userDTO.getEmail(),
 				this.passwordEncoder.encode(userDTO.getPassword()));
 		if (userDTO.getEmail().contains("admin@")) {
 			user.setRole("admin");
@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public LoginMessage loginUser(LoginDTO loginDTO) {
-		String msg = "";
 		User user1 = userRepo.findByEmail(loginDTO.getEmail());
 		if (user1 != null) {
 			String password = loginDTO.getPassword();

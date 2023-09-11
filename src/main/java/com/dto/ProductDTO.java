@@ -1,5 +1,7 @@
 package com.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +15,12 @@ public class ProductDTO {
 
 	private Integer price;
 
-	private String categoryId;
+	private String description;
+
+	private String userId;
+
+	private List<String> categoryId;
+
+	private List<byte[]> images;
 
 }

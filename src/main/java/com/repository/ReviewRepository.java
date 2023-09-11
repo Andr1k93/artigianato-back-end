@@ -10,6 +10,6 @@ public interface ReviewRepository extends JpaRepository<Review, String> {
 
 	List<Review> findByProductProductId(String productId);
 
-	List<Review> findByUserUserid(String userId);
+	List<Review> findByUserUserId(String userId);
 
 }

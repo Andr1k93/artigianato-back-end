@@ -1,5 +1,6 @@
 package com.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.dto.ProductDTO;
 import com.entity.Category;
+import com.entity.Image;
 import com.entity.Product;
 import com.repository.CategoryRepository;
+import com.repository.ImageRepository;
 import com.repository.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private CategoryRepository cr;
+
+	@Autowired
+	private ImageRepository ir;
 
 	@Override
 	public ResponseEntity<List<Product>> get() {
@@ -62,19 +68,33 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		product.setName(productDTO.getName());
 		product.setPrice(productDTO.getPrice());
+		product.setDescription(productDTO.getDescription());
 
-		// Find the Category by ID and associate it with the Product
-		Category category = cr.findById(productDTO.getCategoryId()).orElseThrow(
-				() -> new EntityNotFoundException("Category not found with ID: " + productDTO.getCategoryId()));
+		List<Category> categories = new ArrayList<>();
+		for (String categoryId : productDTO.getCategoryId()) {
+			Category category = cr.findById(categoryId)
+					.orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + categoryId));
+			categories.add(category);
+			category.getProducts().add(product);
 
-		// Add the Product to the Category and vice versa
-		product.getCategories().add(category);
-		category.getProducts().add(product);
+			cr.save(category);
+		}
+		product.setCategories(categories);
 
-		// Save the Product entity (this will also cascade the Category association)
 		pr.save(product);
-		return new ResponseEntity<>(product, HttpStatus.OK);
 
+		List<Image> images = new ArrayList<>();
+		for (byte[] imageData : productDTO.getImages()) {
+			Image image = new Image();
+			image.setImageData(imageData);
+			image.setProduct(product);
+			images.add(image);
+			product.getImages().add(image);
+		}
+		ir.saveAll(images);
+		pr.save(product);
+
+		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
 
 }

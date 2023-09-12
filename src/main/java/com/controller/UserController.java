@@ -28,8 +28,8 @@ public class UserController {
 	private UserService us;
 
 	@PostMapping("/save")
-	public ResponseEntity<String> saveUser(@RequestBody UserDTO UserDTO) {
-		ResponseEntity<String> id = us.addUser(UserDTO);
+	public ResponseEntity<Object> saveUser(@RequestBody UserDTO UserDTO) {
+		ResponseEntity<Object> id = us.addUser(UserDTO);
 		return id;
 	}
 
@@ -45,7 +45,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/deleteUser/{id}")
-	public void Delete(@PathVariable Integer id) {
+	public void Delete(@PathVariable String id) {
 		us.delete(id);
 	}
 

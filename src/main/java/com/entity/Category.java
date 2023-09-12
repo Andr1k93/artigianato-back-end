@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,8 +31,7 @@ public class Category {
 	@Column(name = "category_id")
 	private String categoryId;
 
-	@ManyToMany
-	@JoinColumn(name = "product_id")
+	@ManyToMany(mappedBy = "categories")
 	private List<Product> products;
 
 	private String name;

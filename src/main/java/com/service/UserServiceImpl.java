@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public ResponseEntity<String> addUser(UserDTO userDTO) {
-		User user = new User(userDTO.getUserid(), userDTO.getUsername(), userDTO.getEmail(),
+	public ResponseEntity<Object> addUser(UserDTO userDTO) {
+		User user = new User(userDTO.getUserId(), userDTO.getUsername(), userDTO.getEmail(),
 				this.passwordEncoder.encode(userDTO.getPassword()));
 		if (userDTO.getEmail().contains("admin@")) {
 			user.setRole("admin");
@@ -36,20 +36,19 @@ public class UserServiceImpl implements UserService {
 			return ResponseEntity.badRequest().body("Email is already registered.");
 		}
 		userRepo.save(user);
-		return ResponseEntity.ok(user.getUsername());
+		return ResponseEntity.ok(user);
 	}
 
 	@Override
 	public LoginMessage loginUser(LoginDTO loginDTO) {
-		String msg = "";
 		User user1 = userRepo.findByEmail(loginDTO.getEmail());
 		if (user1 != null) {
 			String password = loginDTO.getPassword();
 			String encodedPassword = user1.getPassword();
 			Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
 			if (isPwdRight) {
-				Optional<User> employee = userRepo.findOneByEmailAndPassword(loginDTO.getEmail(), encodedPassword);
-				if (employee.isPresent()) {
+				Optional<User> user = userRepo.findOneByEmailAndPassword(loginDTO.getEmail(), encodedPassword);
+				if (user.isPresent()) {
 					return new LoginMessage("Login Success", true);
 				} else {
 					return new LoginMessage("Login Failed", false);
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(String id) {
 		try {
 			userRepo.deleteById(id);
 		} catch (IllegalArgumentException e) {

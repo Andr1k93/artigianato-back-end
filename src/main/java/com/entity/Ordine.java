@@ -8,7 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +38,11 @@ public class Ordine {
 	private boolean isPaid;
 
 	@ManyToMany
-	@JoinColumn(name = "product_id")
+	@JoinTable(name = "ordine_product", joinColumns = @JoinColumn(name = "ordine_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
 	private List<Product> products;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 }

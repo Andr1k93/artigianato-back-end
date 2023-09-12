@@ -1,10 +1,13 @@
 package com.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,22 +17,30 @@ import lombok.Setter;
 public class User {
 
 	@Id
-	@Column(name = "user_id", length = 45)
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int userid;
+	@Column(name = "user_id")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String userId;
 	@Column(name = "user_name", length = 255)
 	private String username;
 	private String role;
-	@Column(name = "email", length = 255, unique = true)
+	@Column(unique = true)
 	private String email;
-	@Column(name = "password", length = 255)
 	private String password;
+
+	@OneToMany(mappedBy = "user")
+	private List<Ordine> orders;
+
+	@OneToMany
+	private List<Product> products;
+
+	@OneToMany(mappedBy = "user")
+	private List<Review> reviews;
 
 	public User() {
 	}
 
-	public User(int userid, String username, String email, String password) {
-		this.userid = userid;
+	public User(String userId, String username, String email, String password) {
+		this.userId = userId;
 		this.username = username;
 		this.email = email;
 		this.password = password;
